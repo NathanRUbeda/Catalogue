@@ -16,3 +16,6 @@ Catalogue is designed to work with an API key from [The Cat API](https://thecata
 
 ## Architecture 
 Catalogue is implemented using MVVM architecture pattern. The Model has all necessary data and business logic needed to retrieve the cat breeds from the web service. The view is responsible for displaying the cat breeds to the user. The ViewModel stores and manages the retrieved data.
+
+## Testing
+All UI and Unit Tests are designed not to require any additional dependencies. Therefore, you simply run the test and observe the result.
