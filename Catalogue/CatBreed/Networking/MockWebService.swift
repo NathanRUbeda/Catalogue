@@ -6,10 +6,9 @@
 //
 
 import Foundation
-@testable import Catalogue
 
 /// An object that mimics an interaction with a cloud service using a JSON file.
-class MockWebService: WebService, CatBreedProvider, CatBreedDetailProvider {
+class MockWebService: WebServiceDecodable, CatBreedProvider, CatBreedDetailProvider {
 	/// Sends request to get CatBreeds.
 	/// - Parameters:
 	/// - page: The page of the API request.
