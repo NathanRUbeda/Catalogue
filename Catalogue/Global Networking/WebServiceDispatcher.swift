@@ -8,7 +8,7 @@
 import Foundation
 
 /// An object that acts as a dispatcher for requests made.
-protocol WebServiceDispatcher {
+protocol WebServiceDispatcher: WebServiceDecodable {
 	/// Dispatches data utilizing a `WebServiceRequest`.
 	/// - Parameters:
 	/// -  request: A `WebServiceRequest` containing the request settings.

@@ -40,13 +40,7 @@ class CoreWebServiceDispatcher: WebServiceDispatcher {
 		}
 		
 		let (data, _) = try await URLSession.shared.data(for: request)
-		return try decode(data)
-	}
-	
-	/// Decodes data received from request.
-	func decode<T: Decodable>(_ data: Data) throws -> T {
-		let decoder = JSONDecoder()
-		return try decoder.decode(T.self, from: data)
+		
 		guard !Task.isCancelled else {
 			throw NetworkError.unableToDispatch(description: NSLocalizedString("Task cancelled", comment: ""))
 		}

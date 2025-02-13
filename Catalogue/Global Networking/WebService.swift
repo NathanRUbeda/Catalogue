@@ -7,8 +7,20 @@
 
 import Foundation
 
+protocol WebServiceDecodable {
+	/// Decodes data received from request.
+	func decode<T: Decodable>(_ data: Data) throws -> T
+}
+
+extension WebServiceDecodable {
+	func decode<T: Decodable>(_ data: Data) throws -> T {
+		let decoder = JSONDecoder()
+		return try decoder.decode(T.self, from: data)
+	}
+}
+
 /// An object that interacts with a cloud service.
-class WebService {
+class WebService: WebServiceDecodable {
 	/// The dispatcher to use for networking.
 	private var dispatcher: WebServiceDispatcher
 	
@@ -23,11 +35,5 @@ class WebService {
 	/// - Returns: The value returned from the URL decoded to the specified type.
 	func dispatch<T: Decodable>(using request: WebServiceRequest) async throws -> T {
 		try await self.dispatcher.dispatch(using: request)
-	}
-	
-	/// Decodes data received from request.
-	func decode<T: Decodable>(_ data: Data) throws -> T {
-		let decoder = JSONDecoder()
-		return try decoder.decode(T.self, from: data)
 	}
 }
