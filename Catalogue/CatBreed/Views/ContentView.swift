@@ -154,7 +154,7 @@ struct ContentView: View {
 				)
 			}
 			.buttonStyle(.plain)
-			.accessibilityIdentifier("FavoriteCatBreedNavigationLink")
+			.accessibilityIdentifier("FavoriteCatBreed\(favoritedBreed.name)Button")
 		}
 	}
 	
@@ -182,7 +182,7 @@ struct ContentView: View {
 				)
 			}
 			.buttonStyle(.plain)
-			.accessibilityIdentifier("CatBreedNavigationLink")
+			.accessibilityIdentifier("CatBreed\(breed.name)Button")
 		}
 	}
 	
