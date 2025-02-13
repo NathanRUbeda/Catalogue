@@ -14,4 +14,8 @@ enum Constants {
 		let endpoint = Self.catImageBaseURL + id + ".jpg"
 		return URL(string: endpoint)
 	}
+	static let catBaseURLEndpoint = "http://api.thecatapi.com/v1/"
+	static func dispatchPath(for endpoint: String) -> String {
+		Self.catBaseURLEndpoint + endpoint
+	}
 }

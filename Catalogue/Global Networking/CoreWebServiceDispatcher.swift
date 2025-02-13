@@ -24,8 +24,7 @@ class CoreWebServiceDispatcher: WebServiceDispatcher {
 	/// - Throws: An error if the URL can't be built or if encountered or returned when sending the URL request.
 	/// - Returns: The value returned from the URL decoded to the specified type.
 	private func _dispatch<T: Decodable>(using request: WebServiceRequest) async throws -> T {
-		// TODO: make url a Constant
-		guard let url = URL(string: "http://api.thecatapi.com/v1/" + request.endpoint) else {
+		guard let url = URL(string: Constants.dispatchPath(for: request.endpoint)) else {
 			throw NetworkError.invalidURL
 		}
 		
