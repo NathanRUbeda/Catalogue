@@ -20,7 +20,7 @@ struct CatBreedDetailView: View {
 	let toggleFavorited: () -> Void
 	
 	/// The view model for the detail view.
-	@Bindable var viewModel: CatBreedDetailViewModel
+	@State var viewModel: CatBreedDetailViewModel
 	
 	// MARK: Local properties
 	private var information: [String: String] {
@@ -126,7 +126,7 @@ struct CatBreedDetailView: View {
 		}
 		.alert(
 			"Unable to get cat breed details",
-			isPresented: self.$viewModel.displayErrorAlert,
+			isPresented: Binding(get: {  self.viewModel.displayErrorAlert }, set: {  self.viewModel.displayErrorAlert = $0 }),
 			actions: {
 				Button("OK") {
 					self.viewModel.displayErrorAlert = false
