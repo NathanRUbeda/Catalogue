@@ -75,13 +75,6 @@ struct ContentView: View {
 				.scrollTargetLayout()
 			}
 			.scrollIndicators(.hidden)
-			.refreshable {
-				if self.isInternetConnected == false {
-					self.displayNoInternetAlert = true
-				} else {
-					await self.viewModel.refresh()
-				}
-			}
 			.searchable(
 				text: self.$query,
 				prompt: "Search by breed name…"
