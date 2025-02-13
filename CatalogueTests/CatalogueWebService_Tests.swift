@@ -9,10 +9,11 @@ import XCTest
 @testable import Catalogue
 
 final class CatalogueWebService_Tests: XCTestCase {
-	var webService: CatBreedProvider?
+	var webService: (CatBreedProvider & CatBreedDetailProvider)?
 	
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
+		self.webService = MockWebService()
     }
 
     override func tearDownWithError() throws {
@@ -22,7 +23,9 @@ final class CatalogueWebService_Tests: XCTestCase {
 	
 	func test_WebService_fetchBreeds_shouldFetchBreeds() async throws {
 		// Given
-		let webService = WebServiceFactory.shared.catBreedProvider()
+		guard let webService else {
+			return
+		}
 		
 		// When
 		let response = try await webService.fetchBreeds(page: 0)
@@ -33,7 +36,9 @@ final class CatalogueWebService_Tests: XCTestCase {
 	
 	func test_WebService_fetchBreeds_shouldFetchSpecificPage() async throws {
 		// Given
-		let webService = WebServiceFactory.shared.catBreedProvider()
+		guard let webService else {
+			return
+		}
 		
 		// When
 		let pages = [0, 1]
@@ -47,7 +52,9 @@ final class CatalogueWebService_Tests: XCTestCase {
 	
 	func test_WebService_fetchSingleBreed_shouldFetchSpecificBreed() async throws {
 		// Given
-		let webService = WebServiceFactory.shared.catBreedDetailProvider()
+		guard let webService else {
+			return
+		}
 		
 		// When
 		let catBreedIds = ["abys", "bomb", "chee"]
@@ -61,7 +68,9 @@ final class CatalogueWebService_Tests: XCTestCase {
 	
 	func test_WebService_fetchSingleBreed_shouldDecodeJSON() async throws {
 		// Given
-		let webService = WebServiceFactory.shared.catBreedDetailProvider()
+		guard let webService else {
+			return
+		}
 		let breedId = "abys"
 		
 		// When
@@ -70,8 +79,4 @@ final class CatalogueWebService_Tests: XCTestCase {
 		// Then
 		XCTAssertEqual(breedId, response.id)
 	}
-	
-//	func test_WebService_decoding() throws {
-// last: func test if favorite works - in memory - query swiftData and see if its in there
-	
 }
