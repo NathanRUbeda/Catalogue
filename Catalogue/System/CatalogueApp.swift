@@ -32,6 +32,11 @@ struct CatalogueApp: App {
 					SplashScreenView()
 				}
 			}
+			.task {
+				if !self.viewModel.isLoaded {
+					await self.viewModel.fetchInitialCatBreeds()
+				}
+			}
 		}
 		.modelContainer(for: FavoriteCatBreed.self)
 		.environment(\.isInternetConnected, self.networkMonitor.isConnected)

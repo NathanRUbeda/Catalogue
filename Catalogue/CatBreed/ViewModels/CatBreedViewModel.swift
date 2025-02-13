@@ -44,8 +44,6 @@ class CatBreedViewModel {
 	) {
 		self.webService = webService
 		self.detailWebService = detailWebService
-		
-		self.fetchInitialCatBreeds()
 	}
 	
 	/// Refresh the view model by resetting the cat breeds from the web service.
@@ -95,10 +93,8 @@ class CatBreedViewModel {
 	}
 	
 	/// Fetches CatBreeds for initial list.
-	func fetchInitialCatBreeds() {
-		Task {
-			await self.refresh()
-			self.isLoaded = true
-		}
+	func fetchInitialCatBreeds() async {
+		await self.refresh()
+		self.isLoaded = true
 	}
 }
