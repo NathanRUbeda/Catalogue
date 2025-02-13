@@ -88,7 +88,7 @@ class CatBreedViewModel {
 		self.isFetching = true
 		
 		guard let webService else {
-			throw NSError(domain: "CatBreedViewModel", code: 0)
+			throw NetworkError.unableToDispatch()
 		}
 		
 		return try await webService.fetchBreeds(page: page)

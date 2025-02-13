@@ -35,6 +35,10 @@ class CoreWebServiceDispatcher: WebServiceDispatcher {
 		request.httpMethod = request.httpMethod
 		request.timeoutInterval = 10
 		
+		guard !Task.isCancelled else {
+			throw NetworkError.unableToDispatch(description: NSLocalizedString("Task cancelled", comment: ""))
+		}
+		
 		let (data, _) = try await URLSession.shared.data(for: request)
 		return try decode(data)
 	}
@@ -43,5 +47,9 @@ class CoreWebServiceDispatcher: WebServiceDispatcher {
 	func decode<T: Decodable>(_ data: Data) throws -> T {
 		let decoder = JSONDecoder()
 		return try decoder.decode(T.self, from: data)
+		guard !Task.isCancelled else {
+			throw NetworkError.unableToDispatch(description: NSLocalizedString("Task cancelled", comment: ""))
+		}
+		return try self.decode(data)
 	}
 }
