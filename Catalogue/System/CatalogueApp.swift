@@ -18,9 +18,15 @@ struct CatalogueApp: App {
 	
 	init() {
 		WebServiceFactory.shared.dispatcher = CoreWebServiceDispatcher()
+		let webService: CatBreedProvider
 		
-		let catBreedWebService = WebServiceFactory.shared.catBreedProvider()
-		self.viewModel = .init(webService: catBreedWebService)
+		let isTestEnvironment = ProcessInfo.processInfo.environment["IS_TEST"]
+		if isTestEnvironment == "TRUE" {
+			webService = MockWebService()
+		} else {
+			webService = WebServiceFactory.shared.catBreedProvider()
+		}
+		self.viewModel = .init(webService: webService)
 	}
 	
 	var body: some Scene {

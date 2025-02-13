@@ -78,6 +78,9 @@
          <EnvironmentVariable
             key = "API_Secret_Key"
             value = "live_0SuIAbwiInCw0OBPo0jjGzIihjvKVqRODyppgbxF7KWuf5vFjdbnZvfqCO4aaNNB"
+         <EnvironmentVariable
+            key = "IS_TEST"
+            value = "FALSE"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
