@@ -11,36 +11,49 @@ import SwiftUI
 struct BreedImageView: View {
 	// MARK: Injected properties
 	/// The image id for the cat breed.
-	let referenceImageId: String
+	let referenceImageId: String?
 	
-	/// The width of the image.
-	let width: CGFloat
+	// MARK: Local properties
+	/// If the image is done loading or not.
+	@State private var isLoading = true
 	
-	/// The height of the image.
-	let height: CGFloat
+	/// The image loading error.
+	@State private var error: Error?
 	
-	/// The corner radius of the image.
-	let cornerRadius: CGFloat
+	/// The cat breed image view to display.
+	@State private var image: Image?
 	
 	var body: some View {
-		AsyncImage(url: Constants.catImageURL(for: self.referenceImageId)) { phase in
-			if let image = phase.image {
-				image
-					.resizable()
-					.scaledToFill()
-					.frame(width: self.width, height: self.height)
-					.clipped()
-					.clipShape(.rect(cornerRadius: self.cornerRadius))
-					.overlay(
-						RoundedRectangle(cornerRadius: self.cornerRadius)
-							.stroke(.gray, lineWidth: 1)
-					)
+		self.contentView
+			.task {
+				defer {
+					self.isLoading = false
+				}
 				
-			} else if phase.error != nil {
-				self.errorView
-			} else {
-				self.loadingView
+				if let referenceImageId, let url = Constants.catImageURL(for: referenceImageId) {
+					do {
+						let (data, _) = try await URLSession.shared.data(from: url)
+						if let uiImage = UIImage(data: data) {
+							self.image = Image(uiImage: uiImage)
+						}
+					} catch {
+						self.error = error
+					}
+				}
 			}
+	}
+	
+	/// Displays content depending on the result of the image fetching.
+	@ViewBuilder
+	private var contentView: some View {
+		if let image {
+			image
+				.resizable()
+				.scaledToFill()
+		} else if self.isLoading {
+			self.loadingView
+		} else {
+			self.errorView
 		}
 	}
 	
@@ -48,25 +61,13 @@ struct BreedImageView: View {
 	private var errorView: some View {
 		Image(systemName: "cat.fill")
 			.resizable()
-			.scaledToFill()
-			.frame(width: self.width / 4)
 			.padding()
 			.foregroundStyle(.secondary)
-			.frame(width: self.width, height: self.height)
-			.clipShape(.rect(cornerRadius: self.cornerRadius))
-			.overlay(
-				RoundedRectangle(cornerRadius: self.cornerRadius)
-					.stroke(.gray, lineWidth: 1)
-			)
 	}
 	
 	/// Displays a ProgressView with a rectangular stroke around it.
 	private var loadingView: some View {
 		ProgressView()
-			.frame(width: self.width, height: self.height)
-			.overlay(
-				RoundedRectangle(cornerRadius: self.cornerRadius)
-					.stroke(.gray, lineWidth: 1)
-			)
+			.controlSize(.large)
 	}
 }
