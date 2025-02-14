@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// Displays a label for the breed, containing an image, a name, a favorite button and a short description.
-struct BreedLabel<Breed: DisplayableBreed>: View {
+struct BreedLabel<Breed: DisplayableBreed, ImageView: View>: View {
 	// MARK: Injected properties
 	/// The cat breed to display.
 	let breed: Breed
@@ -19,10 +19,13 @@ struct BreedLabel<Breed: DisplayableBreed>: View {
 	/// A closure envoked by the user to toggle the favorites for this cat breed.
 	let toggleFavorited: () -> Void
 	
+	/// The cat breed image view to display.
+	let imageView: ImageView
+	
 	var body: some View {
 		VStack {
 			HStack {
-				BreedImageView(referenceImageId: self.breed.referenceImageId ?? "N/A", width: 150, height: 130, cornerRadius: 16)
+				BreedImageContainerView(width: 150, height: 130, cornerRadius: 16, imageView: self.imageView)
 					.padding(.trailing, 6)
 				
 				VStack(alignment: .leading) {
