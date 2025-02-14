@@ -141,16 +141,23 @@ struct ContentView: View {
 	private var favoritedBreedsForEach: some View {
 		ForEach(self.sortedFavoritedCatBreeds) { favoritedBreed in
 			let isFavorited = self.favorites.contains(where: { $0.name == favoritedBreed.name })
+			let imageView = BreedImageView(referenceImageId: favoritedBreed.referenceImageId)
 			
 			NavigationLink {
-				CatBreedDetailView(for: favoritedBreed.id, webService: self.viewModel.detailWebService, isFavorited: isFavorited, toggleFavorited: { toggleFavorited(catBreed: favoritedBreed) })
+				CatBreedDetailView(
+					for: favoritedBreed.id,
+					webService: self.viewModel.detailWebService,
+					isFavorited: isFavorited, toggleFavorited: { toggleFavorited(catBreed: favoritedBreed) },
+					imageView: imageView
+				)
 			} label: {
 				BreedLabel(
 					breed: favoritedBreed,
 					isFavorited: isFavorited,
 					toggleFavorited: {
 						self.toggleFavorited(catBreed: favoritedBreed)
-					}
+					},
+					imageView: imageView
 				)
 			}
 			.buttonStyle(.plain)
@@ -169,16 +176,23 @@ struct ContentView: View {
 	private var breedsForEach: some View {
 		ForEach(self.filteredAndSortedCatBreeds) { breed in
 			let isFavorited = self.favorites.contains(where: { $0.name == breed.name })
+			let imageView = BreedImageView(referenceImageId: breed.referenceImageId)
 			
 			NavigationLink {
-				CatBreedDetailView(for: breed.id, webService: self.viewModel.detailWebService, isFavorited: isFavorited, toggleFavorited: { toggleFavorited(catBreed: breed) })
+				CatBreedDetailView(
+					for: breed.id,
+					webService: self.viewModel.detailWebService,
+					isFavorited: isFavorited, toggleFavorited: { toggleFavorited(catBreed: breed) },
+					imageView: imageView
+				)
 			} label: {
 				BreedLabel(
 					breed: breed,
 					isFavorited: isFavorited,
 					toggleFavorited: {
 						self.toggleFavorited(catBreed: breed)
-					}
+					},
+					imageView: imageView
 				)
 			}
 			.buttonStyle(.plain)
