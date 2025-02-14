@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// Displays a NavigationStack with a ScrollView containing detailed information about a cat breed.
-struct CatBreedDetailView: View {
+struct CatBreedDetailView<ImageView: View>: View {
 	// MARK: Environment injected properties
 	@Environment(\.isInternetConnected) var isInternetConnected
 	
@@ -21,6 +21,9 @@ struct CatBreedDetailView: View {
 	
 	/// The view model for the detail view.
 	@State var viewModel: CatBreedDetailViewModel
+	
+	/// The cat breed image view to display.
+	let imageView: ImageView
 	
 	// MARK: Local properties
 	private var information: [String: String] {
@@ -53,11 +56,13 @@ struct CatBreedDetailView: View {
 		for breedId: String,
 		webService: CatBreedDetailProvider? = nil,
 		isFavorited: Bool,
-		toggleFavorited: @escaping () -> Void
+		toggleFavorited: @escaping () -> Void,
+		imageView: ImageView
 	) {
 		self.viewModel = .init(for: breedId, using: webService)
 		self.isFavorited = isFavorited
 		self.toggleFavorited = toggleFavorited
+		self.imageView = imageView
 	}
 	
 	var body: some View {
@@ -79,7 +84,7 @@ struct CatBreedDetailView: View {
 	private var content: some View {
 		ScrollView {
 			VStack(alignment: .leading) {
-				BreedImageView(referenceImageId: self.viewModel.referenceImageId ?? "N/A", width: 370, height: 200, cornerRadius: 20)
+				BreedImageContainerView(width: 370, height: 200, cornerRadius: 20, imageView: self.imageView)
 					.padding(.vertical)
 				
 				Divider()
